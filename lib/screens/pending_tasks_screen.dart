@@ -20,15 +20,25 @@ class PendingTasksScreen extends StatelessWidget {
             child: Chip(
               label: BlocBuilder<TaskCubit, TaskState>(
                 builder: (context, state) {
+                  final pendingTasks = state.tasks
+                      .where((element) => (element.isDone == false))
+                      .toList();
+                  final completedTasks = state.tasks
+                      .where((element) => (element.isDone == true))
+                      .toList();
                   return Text(
-                    '${state.tasks.length} Pending | ${state.tasks.length} Completed',
+                    '${pendingTasks.length} Pending | ${completedTasks.length} Completed',
                   );
                 },
               ),
             ),
           ),
           const SizedBox(height: 10),
-          TasksList(tasksList: TestData.pendingTasks),
+          BlocBuilder<TaskCubit, TaskState>(
+            builder: (context, state) {
+              return TasksList(tasksList: state.tasks);
+            },
+          ),
         ],
       ),
     );
