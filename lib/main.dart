@@ -1,4 +1,4 @@
-import 'package:bloc_finals_exam/models/task_cubit.dart';
+import 'package:bloc_finals_exam/cubit/task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
