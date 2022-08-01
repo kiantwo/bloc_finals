@@ -1,4 +1,6 @@
+import 'package:bloc_finals_exam/models/task_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,11 +26,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BloC Tasks App',
-      theme: AppThemes.appThemeData[AppTheme.lightMode],
-      home: const TabsScreen(),
-      onGenerateRoute: appRouter.onGenerateRoute,
+    return BlocProvider<TaskCubit>(
+      create: (_) => TaskCubit(),
+      child: MaterialApp(
+        title: 'BloC Tasks App',
+        theme: AppThemes.appThemeData[AppTheme.lightMode],
+        home: const TabsScreen(),
+        onGenerateRoute: appRouter.onGenerateRoute,
+      ),
     );
   }
 }
