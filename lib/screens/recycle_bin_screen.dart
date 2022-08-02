@@ -30,7 +30,24 @@ class RecycleBinScreen extends StatelessWidget {
                     icon: const Icon(Icons.delete_forever),
                     label: const Text('Delete all tasks'),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    final removedTasks = context
+                        .read<TaskCubit>()
+                        .tasks
+                        .where((element) => (element.isDeleted == true))
+                        .toList();
+                    for (Task task in removedTasks) {
+                      final deleteTask = Task(
+                          id: task.id,
+                          title: task.title,
+                          description: task.description,
+                          createdAt: task.createdAt,
+                          isFavorite: task.isFavorite,
+                          isDone: task.isDone,
+                          isDeleted: !task.isDeleted!);
+                      context.read<TaskCubit>().deleteTask(deleteTask);
+                    }
+                  },
                 ),
               ],
             ),
