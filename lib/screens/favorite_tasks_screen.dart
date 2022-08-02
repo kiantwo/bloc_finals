@@ -24,7 +24,8 @@ class FavoriteTasksScreen extends StatelessWidget {
                   final favoriteTasks = context
                       .read<TaskCubit>()
                       .tasks
-                      .where((element) => (element.isFavorite == true))
+                      .where((element) => (element.isFavorite == true &&
+                          element.isDeleted == false))
                       .toList();
                   return Text('${favoriteTasks.length} Tasks');
                 },
@@ -37,7 +38,8 @@ class FavoriteTasksScreen extends StatelessWidget {
               final tasks = context
                   .read<TaskCubit>()
                   .tasks
-                  .where((element) => (element.isFavorite == true))
+                  .where((element) => (element.isFavorite == true &&
+                      element.isDeleted == false))
                   .toList();
               return TasksList(tasksList: tasks);
             },

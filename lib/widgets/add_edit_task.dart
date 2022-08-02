@@ -95,7 +95,13 @@ class _AddEditTaskState extends State<AddEditTask> {
                           final task = Task(
                               id: widget.task != null ? widget.task!.id : null,
                               title: _title,
-                              description: _description);
+                              description: _description,
+                              isFavorite: widget.task != null
+                                  ? widget.task!.isFavorite!
+                                  : null,
+                              isDone: widget.task != null
+                                  ? widget.task!.isDone!
+                                  : null);
                           context.read<TaskCubit>().addEditTask(task);
                           Navigator.pop(context);
                         }
