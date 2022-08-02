@@ -33,7 +33,11 @@ class TaskCubit extends Cubit<Task> {
 
   void deleteTask(Task task) {
     int index = tasks.indexWhere((element) => element.id == task.id);
-    tasks[index] = task;
+    if (task.isDeleted!) {
+      tasks[index] = task;
+    } else {
+      tasks.removeAt(index);
+    }
     emit(state.copyWith(
         id: task.id,
         isFavorite: task.isFavorite,
