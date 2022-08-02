@@ -17,6 +17,12 @@ class TaskCubit extends Cubit<Task> {
     emit(state.copyWith(id: task.id, isFavorite: task.isFavorite));
   }
 
+  void completeTask(Task task) {
+    int index = tasks.indexWhere((element) => element.id == task.id);
+    tasks[index] = task;
+    emit(state.copyWith(id: task.id, isDone: task.isDone));
+  }
+
 // @override
 // Task? fromJson(Map<String, dynamic> json) {
 //   return Task.fromMap(json);
