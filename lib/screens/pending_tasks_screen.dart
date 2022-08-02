@@ -23,12 +23,14 @@ class PendingTasksScreen extends StatelessWidget {
                   final pendingTasks = context
                       .read<TaskCubit>()
                       .tasks
-                      .where((element) => (element.isDone == false))
+                      .where((element) => (element.isDone == false &&
+                          element.isDeleted == false))
                       .toList();
                   final completedTasks = context
                       .read<TaskCubit>()
                       .tasks
-                      .where((element) => (element.isDone == true))
+                      .where((element) => (element.isDone == true &&
+                          element.isDeleted == false))
                       .toList();
                   return Text(
                     '${pendingTasks.length} Pending | ${completedTasks.length} Completed',
@@ -43,7 +45,8 @@ class PendingTasksScreen extends StatelessWidget {
               final pendingTasks = context
                   .read<TaskCubit>()
                   .tasks
-                  .where((element) => (element.isDone == false))
+                  .where((element) =>
+                      (element.isDone == false && element.isDeleted == false))
                   .toList();
               return TasksList(tasksList: pendingTasks);
             },

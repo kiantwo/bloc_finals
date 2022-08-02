@@ -24,7 +24,8 @@ class CompletedTasksScreen extends StatelessWidget {
                   final completeTasks = context
                       .read<TaskCubit>()
                       .tasks
-                      .where((element) => (element.isDone == true))
+                      .where((element) => (element.isDone == true &&
+                          element.isDeleted == false))
                       .toList();
                   return Text('${completeTasks.length} Tasks');
                 },
@@ -37,7 +38,8 @@ class CompletedTasksScreen extends StatelessWidget {
               final completeTasks = context
                   .read<TaskCubit>()
                   .tasks
-                  .where((element) => (element.isDone == true))
+                  .where((element) =>
+                      (element.isDone == true && element.isDeleted == false))
                   .toList();
               return TasksList(tasksList: completeTasks);
             },
