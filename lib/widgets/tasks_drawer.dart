@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubit/task_cubit.dart';
+import '../models/task.dart';
 import '../screens/recycle_bin_screen.dart';
 import '../screens/tabs_screen.dart';
 import '../test_data.dart';
@@ -29,8 +32,24 @@ class TasksDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.folder_special),
               title: const Text('My Tasks'),
-              trailing: Text(
-                '${TestData.pendingTasks.length} | ${TestData.completedTasks.length}',
+              trailing: BlocBuilder<TaskCubit, Task>(
+                builder: (context, state) {
+                  final pendingTasks = context
+                      .read<TaskCubit>()
+                      .tasks
+                      .where((element) => (element.isDone == false &&
+                          element.isDeleted == false))
+                      .toList();
+                  final completedTasks = context
+                      .read<TaskCubit>()
+                      .tasks
+                      .where((element) => (element.isDone == true &&
+                          element.isDeleted == false))
+                      .toList();
+                  return Text(
+                    '${pendingTasks.length} | ${completedTasks.length}',
+                  );
+                },
               ),
               onTap: () => Navigator.pushReplacementNamed(
                 context,
@@ -41,7 +60,16 @@ class TasksDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.delete),
               title: const Text('Recycle Bin'),
-              trailing: Text('${TestData.removedTasks.length}'),
+              trailing: BlocBuilder<TaskCubit, Task>(
+                builder: (context, state) {
+                  final removedTasks = context
+                      .read<TaskCubit>()
+                      .tasks
+                      .where((element) => (element.isDeleted == true))
+                      .toList();
+                  return Text('${removedTasks.length}');
+                },
+              ),
               onTap: () => Navigator.pushReplacementNamed(
                 context,
                 RecycleBinScreen.path,
