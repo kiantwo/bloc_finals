@@ -50,6 +50,19 @@ class TaskCubit extends Cubit<Task> {
         isDeleted: task.isDeleted));
   }
 
+  void restoreTask(Task task) {
+    int index = tasks.indexWhere((element) => element.id == task.id);
+    tasks[index] = task;
+    emit(state.copyWith(
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        isFavorite: task.isFavorite,
+        isDone: task.isDone,
+        isDeleted: task.isDeleted,
+        createdAt: task.createdAt));
+  }
+
 // @override
 // Task? fromJson(Map<String, dynamic> json) {
 //   return Task.fromMap(json);
