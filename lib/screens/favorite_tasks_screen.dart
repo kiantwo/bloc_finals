@@ -1,4 +1,6 @@
+import 'package:bloc_finals_exam/cubit/task_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/task.dart';
 import '../test_data.dart';
@@ -9,7 +11,7 @@ class FavoriteTasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Task> tasksList = TestData.favoriteTasks;
+    // List<Task> tasksList = TestData.favoriteTasks;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
@@ -17,11 +19,29 @@ class FavoriteTasksScreen extends StatelessWidget {
         children: [
           Center(
             child: Chip(
-              label: Text('${tasksList.length} Tasks'),
+              label: BlocBuilder<TaskCubit, Task>(
+                builder: (context, state) {
+                  final favoriteTasks = context
+                      .read<TaskCubit>()
+                      .tasks
+                      .where((element) => (element.isFavorite == true))
+                      .toList();
+                  return Text('${favoriteTasks.length} Tasks');
+                },
+              ),
             ),
           ),
           const SizedBox(height: 10),
-          TasksList(tasksList: tasksList),
+          BlocBuilder<TaskCubit, Task>(
+            builder: (context, state) {
+              final tasks = context
+                  .read<TaskCubit>()
+                  .tasks
+                  .where((element) => (element.isFavorite == true))
+                  .toList();
+              return TasksList(tasksList: tasks);
+            },
+          ),
         ],
       ),
     );
