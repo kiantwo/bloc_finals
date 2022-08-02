@@ -14,26 +14,39 @@ class TaskCubit extends Cubit<Task> {
       tasks[index] = task;
     }
     emit(state.copyWith(
-      id: task.id,
-      title: task.title,
-      description: task.description,
-      isFavorite: task.isFavorite,
-      isDone: task.isDone,
-    ));
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        isFavorite: task.isFavorite,
+        isDone: task.isDone,
+        isDeleted: task.isDeleted,
+        createdAt: task.createdAt));
   }
 
   void addToFavorite(Task task) {
     int index = tasks.indexWhere((element) => element.id == task.id);
     tasks[index] = task;
     emit(state.copyWith(
-        id: task.id, isFavorite: task.isFavorite, isDone: task.isDone));
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        isFavorite: task.isFavorite,
+        isDone: task.isDone,
+        isDeleted: task.isDeleted,
+        createdAt: task.createdAt));
   }
 
   void completeTask(Task task) {
     int index = tasks.indexWhere((element) => element.id == task.id);
     tasks[index] = task;
     emit(state.copyWith(
-        id: task.id, isFavorite: task.isFavorite, isDone: task.isDone));
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        isFavorite: task.isFavorite,
+        isDone: task.isDone,
+        isDeleted: task.isDeleted,
+        createdAt: task.createdAt));
   }
 
   void deleteTask(Task task) {
@@ -45,9 +58,12 @@ class TaskCubit extends Cubit<Task> {
     }
     emit(state.copyWith(
         id: task.id,
+        title: task.title,
+        description: task.description,
         isFavorite: task.isFavorite,
         isDone: task.isDone,
-        isDeleted: task.isDeleted));
+        isDeleted: task.isDeleted,
+        createdAt: task.createdAt));
   }
 
   void restoreTask(Task task) {
