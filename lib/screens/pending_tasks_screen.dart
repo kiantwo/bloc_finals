@@ -1,8 +1,8 @@
 import 'package:bloc_finals_exam/cubit/task_cubit.dart';
-import 'package:bloc_finals_exam/cubit/task_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../models/task.dart';
 import '../test_data.dart';
 import '../widgets/tasks_list.dart';
 
@@ -18,12 +18,12 @@ class PendingTasksScreen extends StatelessWidget {
         children: [
           Center(
             child: Chip(
-              label: BlocBuilder<TaskCubit, TaskState>(
+              label: BlocBuilder<TaskCubit, Task>(
                 builder: (context, state) {
-                  final pendingTasks = state.tasks
+                  final pendingTasks = context.read<TaskCubit>().tasks
                       .where((element) => (element.isDone == false))
                       .toList();
-                  final completedTasks = state.tasks
+                  final completedTasks = context.read<TaskCubit>().tasks
                       .where((element) => (element.isDone == true))
                       .toList();
                   return Text(
@@ -34,9 +34,10 @@ class PendingTasksScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          BlocBuilder<TaskCubit, TaskState>(
+          BlocBuilder<TaskCubit, Task>(
             builder: (context, state) {
-              return TasksList(tasksList: state.tasks);
+              final List<Task> tasks = context.read<TaskCubit>().tasks;
+              return TasksList(tasksList: tasks);
             },
           ),
         ],
