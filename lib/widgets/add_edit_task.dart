@@ -1,4 +1,6 @@
+import 'package:bloc_finals_exam/cubit/task_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/task.dart';
 
@@ -90,6 +92,9 @@ class _AddEditTaskState extends State<AddEditTask> {
                 ElevatedButton(
                   onPressed: _title.isNotEmpty && _description.isNotEmpty
                       ? () {
+                          final task =
+                              Task(title: _title, description: _description);
+                          context.read<TaskCubit>().addEditTask(task);
                           Navigator.pop(context);
                         }
                       : null,
