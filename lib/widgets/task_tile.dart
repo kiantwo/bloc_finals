@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../cubit/task_cubit.dart';
 import '../models/task.dart';
 import 'add_edit_task.dart';
 import 'popup_menu.dart';
@@ -73,7 +75,15 @@ class TaskTile extends StatelessWidget {
                 Navigator.pop(context);
                 _editTask(context);
               },
-              likeOrDislikeCallback: () {},
+              likeOrDislikeCallback: () {
+                final favoriteTask = Task(
+                    id: task.id,
+                    title: task.title,
+                    description: task.description,
+                    createdAt: task.createdAt,
+                    isFavorite: !task.isFavorite!);
+                context.read<TaskCubit>().addToFavorite(favoriteTask);
+              },
               cancelOrDeleteCallback: () {},
               restoreTaskCallback: () => {},
             ),
