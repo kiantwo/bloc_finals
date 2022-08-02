@@ -14,7 +14,15 @@ class TaskCubit extends Cubit<Task> {
   void addToFavorite(Task task) {
     int index = tasks.indexWhere((element) => element.id == task.id);
     tasks[index] = task;
-    emit(state.copyWith(id: task.id, isFavorite: task.isFavorite));
+    emit(state.copyWith(
+        id: task.id, isFavorite: task.isFavorite, isDone: task.isDone));
+  }
+
+  void completeTask(Task task) {
+    int index = tasks.indexWhere((element) => element.id == task.id);
+    tasks[index] = task;
+    emit(state.copyWith(
+        id: task.id, isFavorite: task.isFavorite, isDone: task.isDone));
   }
 
 // @override

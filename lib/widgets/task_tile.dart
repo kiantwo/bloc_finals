@@ -67,8 +67,22 @@ class TaskTile extends StatelessWidget {
         Row(
           children: [
             Checkbox(
-                value: task.isDone,
-                onChanged: task.isDeleted! ? null : (value) {}),
+              value: task.isDone,
+              onChanged: task.isDeleted!
+                  ? null
+                  : (value) {
+                      // TODO: Implement Complete Task
+                      print(value);
+                      final completeTask = Task(
+                          id: task.id,
+                          title: task.title,
+                          description: task.description,
+                          createdAt: task.createdAt,
+                          isFavorite: task.isFavorite,
+                          isDone: value);
+                      context.read<TaskCubit>().completeTask(completeTask);
+                    },
+            ),
             PopupMenu(
               task: task,
               editCallback: () {
@@ -81,7 +95,8 @@ class TaskTile extends StatelessWidget {
                     title: task.title,
                     description: task.description,
                     createdAt: task.createdAt,
-                    isFavorite: !task.isFavorite!);
+                    isFavorite: !task.isFavorite!,
+                    isDone: task.isDone);
                 context.read<TaskCubit>().addToFavorite(favoriteTask);
               },
               cancelOrDeleteCallback: () {},

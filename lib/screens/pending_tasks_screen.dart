@@ -20,10 +20,14 @@ class PendingTasksScreen extends StatelessWidget {
             child: Chip(
               label: BlocBuilder<TaskCubit, Task>(
                 builder: (context, state) {
-                  final pendingTasks = context.read<TaskCubit>().tasks
+                  final pendingTasks = context
+                      .read<TaskCubit>()
+                      .tasks
                       .where((element) => (element.isDone == false))
                       .toList();
-                  final completedTasks = context.read<TaskCubit>().tasks
+                  final completedTasks = context
+                      .read<TaskCubit>()
+                      .tasks
                       .where((element) => (element.isDone == true))
                       .toList();
                   return Text(
@@ -36,8 +40,12 @@ class PendingTasksScreen extends StatelessWidget {
           const SizedBox(height: 10),
           BlocBuilder<TaskCubit, Task>(
             builder: (context, state) {
-              final List<Task> tasks = context.read<TaskCubit>().tasks;
-              return TasksList(tasksList: tasks);
+              final pendingTasks = context
+                  .read<TaskCubit>()
+                  .tasks
+                  .where((element) => (element.isDone == false))
+                  .toList();
+              return TasksList(tasksList: pendingTasks);
             },
           ),
         ],
