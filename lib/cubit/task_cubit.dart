@@ -7,8 +7,14 @@ class TaskCubit extends Cubit<Task> {
   final List<Task> tasks = [];
 
   void addEditTask(Task task) {
-    tasks.add(task);
-    emit(state.copyWith(title: task.title, description: task.description));
+    int index = tasks.indexWhere((element) => element.id == task.id);
+    if (index == -1) {
+      tasks.add(task);
+    } else {
+      tasks[index] = task;
+    }
+    emit(state.copyWith(
+        id: task.id, title: task.title, description: task.description));
   }
 
   void addToFavorite(Task task) {
