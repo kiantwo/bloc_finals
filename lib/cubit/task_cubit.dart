@@ -14,7 +14,12 @@ class TaskCubit extends Cubit<Task> {
       tasks[index] = task;
     }
     emit(state.copyWith(
-        id: task.id, title: task.title, description: task.description));
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      isFavorite: task.isFavorite,
+      isDone: task.isDone,
+    ));
   }
 
   void addToFavorite(Task task) {
