@@ -13,7 +13,7 @@ import 'screens/tabs_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
+    storageDirectory: await getTemporaryDirectory(),
   );
   HydratedBlocOverrides.runZoned(
     () => runApp(MyApp(appRouter: AppRouter())),
