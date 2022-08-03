@@ -13,7 +13,7 @@ import 'screens/tabs_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
+    storageDirectory: await getApplicationDocumentsDirectory(),
   );
   HydratedBlocOverrides.runZoned(
     () => runApp(MyApp(appRouter: AppRouter())),
@@ -38,7 +38,8 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
-        final appTheme = state.appTheme;
+        final appTheme =
+            state.isDarkTheme! ? AppTheme.darkMode : AppTheme.lightMode;
         return MaterialApp(
           title: 'BloC Tasks App',
           theme: AppThemes.appThemeData[appTheme],

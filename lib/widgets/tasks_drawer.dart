@@ -14,11 +14,7 @@ class TasksDrawer extends StatelessWidget {
   const TasksDrawer({Key? key}) : super(key: key);
 
   _switchToDarkTheme(BuildContext context, bool isDarkTheme) {
-    if (isDarkTheme) {
-      context.read<ThemeCubit>().toggleTheme(AppTheme.darkMode);
-    } else {
-      context.read<ThemeCubit>().toggleTheme(AppTheme.lightMode);
-    }
+    context.read<ThemeCubit>().toggleTheme(isDarkTheme);
   }
 
   @override
@@ -84,16 +80,14 @@ class TasksDrawer extends StatelessWidget {
             const Divider(),
             const Expanded(child: SizedBox()),
             BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
-              final isDarkTheme =
-                  state.appTheme == AppTheme.darkMode ? true : false;
               return ListTile(
                 leading: Switch(
-                  value: isDarkTheme,
+                  value: state.isDarkTheme!,
                   onChanged: (newValue) =>
                       _switchToDarkTheme(context, newValue),
                 ),
                 title: const Text('Switch to Dark Theme'),
-                onTap: () => _switchToDarkTheme(context, !isDarkTheme),
+                onTap: () => _switchToDarkTheme(context, !state.isDarkTheme!),
               );
             }),
             const SizedBox(height: 10),

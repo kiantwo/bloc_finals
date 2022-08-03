@@ -1,19 +1,19 @@
-import 'package:bloc_finals_exam/app_themes.dart';
 import 'package:equatable/equatable.dart';
 
 class ThemeState extends Equatable {
-  final AppTheme? appTheme;
+  final bool? isDarkTheme;
 
-  const ThemeState({this.appTheme});
+  const ThemeState({this.isDarkTheme});
 
-  ThemeState copyWith({
-    AppTheme? appTheme,
-  }) {
-    return ThemeState(
-      appTheme: appTheme ?? this.appTheme,
-    );
+  ThemeState copyWith({bool? isDarkTheme}) {
+    return ThemeState(isDarkTheme: isDarkTheme ?? this.isDarkTheme);
   }
 
+  Map<String, dynamic> toMap() => {'isDarkTheme': isDarkTheme};
+
+  factory ThemeState.fromMap(Map<String, dynamic> map) =>
+      ThemeState(isDarkTheme: map['isDarkTheme'] as bool);
+
   @override
-  List<Object?> get props => [appTheme];
+  List<Object?> get props => [isDarkTheme];
 }
