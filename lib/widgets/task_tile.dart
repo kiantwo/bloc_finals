@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../cubit/task_cubit.dart';
+import '../cubit/task_bloc.dart';
 import '../models/task.dart';
 import 'add_edit_task.dart';
 import 'popup_menu.dart';
@@ -80,7 +80,9 @@ class TaskTile extends StatelessWidget {
                           createdAt: task.createdAt,
                           isFavorite: task.isFavorite,
                           isDone: value);
-                      context.read<TaskCubit>().completeTask(completeTask);
+                      context
+                          .read<TaskBloc>()
+                          .add(CompleteTask(task: completeTask));
                     },
             ),
             PopupMenu(
@@ -97,7 +99,7 @@ class TaskTile extends StatelessWidget {
                     createdAt: task.createdAt,
                     isFavorite: !task.isFavorite!,
                     isDone: task.isDone);
-                context.read<TaskCubit>().addToFavorite(favoriteTask);
+                context.read<TaskBloc>().add(AddToFavorite(task: favoriteTask));
               },
               cancelOrDeleteCallback: () {
                 final deleteTask = Task(
@@ -108,7 +110,7 @@ class TaskTile extends StatelessWidget {
                     isFavorite: task.isFavorite,
                     isDone: task.isDone,
                     isDeleted: !task.isDeleted!);
-                context.read<TaskCubit>().deleteTask(deleteTask);
+                context.read<TaskBloc>().add(DeleteTask(task: deleteTask));
               },
               restoreTaskCallback: () {
                 final restoreTask = Task(
@@ -119,7 +121,7 @@ class TaskTile extends StatelessWidget {
                     isFavorite: task.isFavorite,
                     isDone: task.isDone,
                     isDeleted: !task.isDeleted!);
-                context.read<TaskCubit>().restoreTask(restoreTask);
+                context.read<TaskBloc>().add(RestoreTask(task: restoreTask));
               },
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/task_cubit.dart';
+import '../cubit/task_bloc.dart';
 import '../cubit/task_state.dart';
 import '../models/task.dart';
 import '../test_data.dart';
@@ -20,7 +20,7 @@ class CompletedTasksScreen extends StatelessWidget {
         children: [
           Center(
             child: Chip(
-              label: BlocBuilder<TaskCubit, TaskState>(
+              label: BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
                   final completeTasks = state.tasks!
                       .where((element) => (element.isDone == true &&
@@ -32,7 +32,7 @@ class CompletedTasksScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          BlocBuilder<TaskCubit, TaskState>(
+          BlocBuilder<TaskBloc, TaskState>(
             builder: (context, state) {
               final completeTasks = state.tasks!
                   .where((element) =>

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/task_cubit.dart';
+import '../cubit/task_bloc.dart';
 import '../cubit/task_state.dart';
 import '../models/task.dart';
 import '../widgets/tasks_drawer.dart';
@@ -33,7 +33,7 @@ class RecycleBinScreen extends StatelessWidget {
                   ),
                   onTap: () {
                     final removedTasks = context
-                        .read<TaskCubit>()
+                        .read<TaskBloc>()
                         .state
                         .tasks!
                         .where((element) => (element.isDeleted == true))
@@ -47,7 +47,9 @@ class RecycleBinScreen extends StatelessWidget {
                           isFavorite: task.isFavorite,
                           isDone: task.isDone,
                           isDeleted: !task.isDeleted!);
-                      context.read<TaskCubit>().deleteTask(deleteTask);
+                      context
+                          .read<TaskBloc>()
+                          .add(DeleteTask(task: deleteTask));
                     }
                   },
                 ),
@@ -63,7 +65,7 @@ class RecycleBinScreen extends StatelessWidget {
             children: [
               Center(
                 child: Chip(
-                  label: BlocBuilder<TaskCubit, TaskState>(
+                  label: BlocBuilder<TaskBloc, TaskState>(
                     builder: (context, state) {
                       final removedTasks = state.tasks!
                           .where((element) => (element.isDeleted == true))
@@ -74,7 +76,7 @@ class RecycleBinScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              BlocBuilder<TaskCubit, TaskState>(
+              BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
                   final removedTasks = state.tasks!
                       .where((element) => (element.isDeleted == true))

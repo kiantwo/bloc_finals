@@ -1,4 +1,4 @@
-import 'package:bloc_finals_exam/cubit/task_cubit.dart';
+import 'package:bloc_finals_exam/cubit/task_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -102,7 +102,9 @@ class _AddEditTaskState extends State<AddEditTask> {
                               isDone: widget.task != null
                                   ? widget.task!.isDone!
                                   : null);
-                          context.read<TaskCubit>().addEditTask(task);
+                          context
+                              .read<TaskBloc>()
+                              .add(CreateEditTask(task: task));
                           Navigator.pop(context);
                         }
                       : null,
