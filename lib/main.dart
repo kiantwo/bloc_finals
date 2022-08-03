@@ -1,5 +1,5 @@
 import 'package:bloc_finals_exam/bloc/task_bloc.dart';
-import 'package:bloc_finals_exam/cubit/theme_state.dart';
+import 'package:bloc_finals_exam/bloc/theme_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'app_router.dart';
 import 'app_themes.dart';
-import 'cubit/theme_cubit.dart';
+import 'bloc/theme_bloc.dart';
 import 'screens/tabs_screen.dart';
 
 void main() async {
@@ -33,11 +33,11 @@ class MyApp extends StatelessWidget {
         BlocProvider<TaskBloc>(
           create: (_) => TaskBloc(),
         ),
-        BlocProvider<ThemeCubit>(
-          create: (_) => ThemeCubit(),
+        BlocProvider<ThemeBloc>(
+          create: (_) => ThemeBloc(),
         ),
       ],
-      child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
+      child: BlocBuilder<ThemeBloc, ThemeState>(builder: (context, state) {
         final appTheme =
             state.isDarkTheme! ? AppTheme.darkMode : AppTheme.lightMode;
         return MaterialApp(
