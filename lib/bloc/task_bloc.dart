@@ -52,7 +52,7 @@ class RestoreTask extends TaskEvent {
   List<Object> get props => [task];
 }
 
-class TaskBloc extends Bloc<TaskEvent, TaskState> {
+class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
   TaskBloc()
       : super(const TaskState(
           pendingTasks: [],
@@ -235,13 +235,21 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   void restoreTask(RestoreTask event, Emitter<TaskState> emit) {
-    // int index =
-    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
-    // emit(state.copyWith(
-    //   tasks: List.from(state.tasks!)
-    //     ..removeAt(index)
-    //     ..insert(index, event.task),
-    // ));
+    int removedIndex = state.removedTasks!
+        .indexWhere((element) => element.id == event.task.id);
+
+    emit(state.copyWith(
+      pendingTasks: !event.task.isDone!
+          ? (List.from(state.pendingTasks!)..add(event.task))
+          : state.pendingTasks,
+      completedTasks: event.task.isDone!
+          ? (List.from(state.completedTasks!)..add(event.task))
+          : state.completedTasks,
+      removedTasks: List.from(state.removedTasks!)..removeAt(removedIndex),
+      favoriteTasks: event.task.isFavorite!
+          ? (List.from(state.favoriteTasks!)..add(event.task))
+          : state.favoriteTasks,
+    ));
   }
 
   @override
