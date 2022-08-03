@@ -4,7 +4,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TaskCubit extends Cubit<TaskState> with HydratedMixin {
-  TaskCubit() : super(TaskState(tasks: []));
+  TaskCubit() : super(const TaskState(tasks: []));
 
   void addEditTask(Task task) {
     int index = state.tasks!.indexWhere((element) => element.id == task.id);
