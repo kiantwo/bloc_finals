@@ -61,16 +61,22 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   void completeTask(Task task) {
-    // int index = tasks.indexWhere((element) => element.id == task.id);
-    // tasks[index] = task;
-    // emit(state.copyWith(
-    //     id: task.id,
-    //     title: task.title,
-    //     description: task.description,
-    //     isFavorite: task.isFavorite,
-    //     isDone: task.isDone,
-    //     isDeleted: task.isDeleted,
-    //     createdAt: task.createdAt));
+    int index = state.tasks!.indexWhere((element) => element.id == task.id);
+    emit(state.copyWith(
+      tasks: List.from(state.tasks!)
+        ..removeAt(index)
+        ..insert(
+          index,
+          task.copyWith(
+              id: task.id,
+              title: task.title,
+              description: task.description,
+              isFavorite: task.isFavorite,
+              isDone: task.isDone,
+              isDeleted: task.isDeleted,
+              createdAt: task.createdAt),
+        ),
+    ));
   }
 
   void deleteTask(Task task) {
