@@ -38,10 +38,10 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
+        final appTheme = state.appTheme;
         return MaterialApp(
           title: 'BloC Tasks App',
-          theme:
-              AppThemes.appThemeData[context.read<ThemeCubit>().state.appTheme],
+          theme: AppThemes.appThemeData[appTheme],
           home: const TabsScreen(),
           onGenerateRoute: appRouter.onGenerateRoute,
         );
