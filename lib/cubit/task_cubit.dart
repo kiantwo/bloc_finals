@@ -10,33 +10,13 @@ class TaskCubit extends Cubit<TaskState> {
     int index = state.tasks!.indexWhere((element) => element.id == task.id);
     if (index == -1) {
       emit(state.copyWith(
-        tasks: List.from(state.tasks!)
-          ..add(
-            task.copyWith(
-                id: task.id,
-                title: task.title,
-                description: task.description,
-                isFavorite: task.isFavorite,
-                isDone: task.isDone,
-                isDeleted: task.isDeleted,
-                createdAt: task.createdAt),
-          ),
+        tasks: List.from(state.tasks!)..add(task),
       ));
     } else {
       emit(state.copyWith(
         tasks: List.from(state.tasks!)
           ..removeAt(index)
-          ..insert(
-            index,
-            task.copyWith(
-                id: task.id,
-                title: task.title,
-                description: task.description,
-                isFavorite: task.isFavorite,
-                isDone: task.isDone,
-                isDeleted: task.isDeleted,
-                createdAt: task.createdAt),
-          ),
+          ..insert(index, task),
       ));
     }
   }
@@ -46,17 +26,7 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(
       tasks: List.from(state.tasks!)
         ..removeAt(index)
-        ..insert(
-          index,
-          task.copyWith(
-              id: task.id,
-              title: task.title,
-              description: task.description,
-              isFavorite: task.isFavorite,
-              isDone: task.isDone,
-              isDeleted: task.isDeleted,
-              createdAt: task.createdAt),
-        ),
+        ..insert(index, task),
     ));
   }
 
@@ -65,35 +35,21 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(
       tasks: List.from(state.tasks!)
         ..removeAt(index)
-        ..insert(
-          index,
-          task.copyWith(
-              id: task.id,
-              title: task.title,
-              description: task.description,
-              isFavorite: task.isFavorite,
-              isDone: task.isDone,
-              isDeleted: task.isDeleted,
-              createdAt: task.createdAt),
-        ),
+        ..insert(index, task),
     ));
   }
 
   void deleteTask(Task task) {
-    // int index = tasks.indexWhere((element) => element.id == task.id);
-    // if (task.isDeleted!) {
-    //   tasks[index] = task;
-    // } else {
-    //   tasks.removeAt(index);
-    // }
-    // emit(state.copyWith(
-    //     id: task.id,
-    //     title: task.title,
-    //     description: task.description,
-    //     isFavorite: task.isFavorite,
-    //     isDone: task.isDone,
-    //     isDeleted: task.isDeleted,
-    //     createdAt: task.createdAt));
+    int index = state.tasks!.indexWhere((element) => element.id == task.id);
+    if (task.isDeleted!) {
+      emit(state.copyWith(
+        tasks: List.from(state.tasks!)
+          ..removeAt(index)
+          ..insert(index, task),
+      ));
+    } else {
+      emit(state.copyWith(tasks: List.from(state.tasks!)..removeAt(index)));
+    }
   }
 
   void restoreTask(Task task) {
