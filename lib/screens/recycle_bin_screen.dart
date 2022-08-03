@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/task_cubit.dart';
+import '../cubit/task_state.dart';
 import '../models/task.dart';
 import '../widgets/tasks_drawer.dart';
 import '../widgets/tasks_list.dart';
@@ -33,7 +34,8 @@ class RecycleBinScreen extends StatelessWidget {
                   onTap: () {
                     final removedTasks = context
                         .read<TaskCubit>()
-                        .tasks
+                        .state
+                        .tasks!
                         .where((element) => (element.isDeleted == true))
                         .toList();
                     for (Task task in removedTasks) {
@@ -61,11 +63,9 @@ class RecycleBinScreen extends StatelessWidget {
             children: [
               Center(
                 child: Chip(
-                  label: BlocBuilder<TaskCubit, Task>(
+                  label: BlocBuilder<TaskCubit, TaskState>(
                     builder: (context, state) {
-                      final removedTasks = context
-                          .read<TaskCubit>()
-                          .tasks
+                      final removedTasks = state.tasks!
                           .where((element) => (element.isDeleted == true))
                           .toList();
                       return Text('${removedTasks.length} Tasks');
@@ -74,11 +74,9 @@ class RecycleBinScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              BlocBuilder<TaskCubit, Task>(
+              BlocBuilder<TaskCubit, TaskState>(
                 builder: (context, state) {
-                  final removedTasks = context
-                      .read<TaskCubit>()
-                      .tasks
+                  final removedTasks = state.tasks!
                       .where((element) => (element.isDeleted == true))
                       .toList();
                   return TasksList(tasksList: removedTasks);

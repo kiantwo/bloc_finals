@@ -38,7 +38,8 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
-        final appTheme = state.appTheme;
+        final appTheme =
+            state.isDarkTheme! ? AppTheme.darkMode : AppTheme.lightMode;
         return MaterialApp(
           title: 'BloC Tasks App',
           theme: AppThemes.appThemeData[appTheme],

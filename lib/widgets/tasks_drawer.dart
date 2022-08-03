@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/task_cubit.dart';
+import '../cubit/task_state.dart';
 import '../cubit/theme_state.dart';
 import '../models/task.dart';
 import '../screens/recycle_bin_screen.dart';
@@ -14,11 +15,7 @@ class TasksDrawer extends StatelessWidget {
   const TasksDrawer({Key? key}) : super(key: key);
 
   _switchToDarkTheme(BuildContext context, bool isDarkTheme) {
-    if (isDarkTheme) {
-      context.read<ThemeCubit>().toggleTheme(AppTheme.darkMode);
-    } else {
-      context.read<ThemeCubit>().toggleTheme(AppTheme.lightMode);
-    }
+    context.read<ThemeCubit>().toggleTheme(isDarkTheme);
   }
 
   @override
@@ -38,17 +35,13 @@ class TasksDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.folder_special),
               title: const Text('My Tasks'),
-              trailing: BlocBuilder<TaskCubit, Task>(
+              trailing: BlocBuilder<TaskCubit, TaskState>(
                 builder: (context, state) {
-                  final pendingTasks = context
-                      .read<TaskCubit>()
-                      .tasks
+                  final pendingTasks = state.tasks!
                       .where((element) => (element.isDone == false &&
                           element.isDeleted == false))
                       .toList();
-                  final completedTasks = context
-                      .read<TaskCubit>()
-                      .tasks
+                  final completedTasks = state.tasks!
                       .where((element) => (element.isDone == true &&
                           element.isDeleted == false))
                       .toList();
@@ -66,11 +59,9 @@ class TasksDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.delete),
               title: const Text('Recycle Bin'),
-              trailing: BlocBuilder<TaskCubit, Task>(
+              trailing: BlocBuilder<TaskCubit, TaskState>(
                 builder: (context, state) {
-                  final removedTasks = context
-                      .read<TaskCubit>()
-                      .tasks
+                  final removedTasks = state.tasks!
                       .where((element) => (element.isDeleted == true))
                       .toList();
                   return Text('${removedTasks.length}');
@@ -84,16 +75,14 @@ class TasksDrawer extends StatelessWidget {
             const Divider(),
             const Expanded(child: SizedBox()),
             BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
-              final isDarkTheme =
-                  state.appTheme == AppTheme.darkMode ? true : false;
               return ListTile(
                 leading: Switch(
-                  value: isDarkTheme,
+                  value: state.isDarkTheme!,
                   onChanged: (newValue) =>
                       _switchToDarkTheme(context, newValue),
                 ),
                 title: const Text('Switch to Dark Theme'),
-                onTap: () => _switchToDarkTheme(context, !isDarkTheme),
+                onTap: () => _switchToDarkTheme(context, !state.isDarkTheme!),
               );
             }),
             const SizedBox(height: 10),

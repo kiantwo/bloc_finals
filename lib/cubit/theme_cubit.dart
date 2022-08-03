@@ -1,11 +1,21 @@
-import 'package:bloc_finals_exam/app_themes.dart';
 import 'package:bloc_finals_exam/cubit/theme_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(const ThemeState(appTheme: AppTheme.lightMode));
+class ThemeCubit extends Cubit<ThemeState> with HydratedMixin {
+  ThemeCubit() : super(const ThemeState(isDarkTheme: false));
 
-  void toggleTheme(AppTheme appTheme) {
-    emit(state.copyWith(appTheme: appTheme));
+  void toggleTheme(bool isDarkTheme) {
+    emit(state.copyWith(isDarkTheme: isDarkTheme));
+  }
+
+  @override
+  ThemeState? fromJson(Map<String, dynamic> json) {
+    return ThemeState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(ThemeState state) {
+    return state.toMap();
   }
 }
