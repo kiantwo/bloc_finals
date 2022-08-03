@@ -1,4 +1,4 @@
-import 'package:bloc_finals_exam/cubit/task_state.dart';
+import 'package:bloc_finals_exam/bloc/task_state.dart';
 import 'package:bloc_finals_exam/models/task.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';

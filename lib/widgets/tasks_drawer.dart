@@ -3,8 +3,8 @@ import 'package:bloc_finals_exam/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/task_bloc.dart';
-import '../cubit/task_state.dart';
+import '../bloc/task_bloc.dart';
+import '../bloc/task_state.dart';
 import '../cubit/theme_state.dart';
 import '../models/task.dart';
 import '../screens/recycle_bin_screen.dart';

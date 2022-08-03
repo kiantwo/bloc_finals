@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/task_bloc.dart';
-import '../cubit/task_state.dart';
+import '../bloc/task_bloc.dart';
+import '../bloc/task_state.dart';
 import '../models/task.dart';
 import '../widgets/tasks_drawer.dart';
 import '../widgets/tasks_list.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../cubit/task_bloc.dart';
+import '../bloc/task_bloc.dart';
 import '../models/task.dart';
 import 'add_edit_task.dart';
 import 'popup_menu.dart';
