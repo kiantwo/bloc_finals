@@ -72,8 +72,6 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
         .indexWhere((element) => element.id == event.task.id);
     int completedIndex = state.completedTasks!
         .indexWhere((element) => element.id == event.task.id);
-    int? favoriteIndex = state.favoriteTasks!
-        .indexWhere((element) => element.id == event.task.id);
 
     if (pendingIndex == -1 && completedIndex == -1) {
       // If Adding Task
@@ -81,15 +79,13 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
         state.copyWith(
             pendingTasks: (List.from(state.pendingTasks!)..add(event.task)),
             completedTasks: state.completedTasks,
-            favoriteTasks: favoriteIndex != -1
-                ? (List.from(state.favoriteTasks!)
-                  ..removeAt(favoriteIndex)
-                  ..insert(favoriteIndex, event.task))
-                : state.favoriteTasks,
+            favoriteTasks: state.favoriteTasks,
             removedTasks: state.removedTasks),
       );
     } else {
       // If Editing Task
+      int? favoriteIndex = state.favoriteTasks!
+          .indexWhere((element) => element.id == event.task.id);
       emit(
         state.copyWith(
             pendingTasks: pendingIndex != -1
