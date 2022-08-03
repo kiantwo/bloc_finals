@@ -1,4 +1,5 @@
 import 'package:bloc_finals_exam/cubit/task_cubit.dart';
+import 'package:bloc_finals_exam/cubit/theme_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'app_router.dart';
 import 'app_themes.dart';
+import 'cubit/theme_cubit.dart';
 import 'screens/tabs_screen.dart';
 
 void main() async {
@@ -26,14 +28,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<TaskCubit>(
-      create: (_) => TaskCubit(),
-      child: MaterialApp(
-        title: 'BloC Tasks App',
-        theme: AppThemes.appThemeData[AppTheme.lightMode],
-        home: const TabsScreen(),
-        onGenerateRoute: appRouter.onGenerateRoute,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<TaskCubit>(
+          create: (_) => TaskCubit(),
+        ),
+        BlocProvider<ThemeCubit>(
+          create: (_) => ThemeCubit(),
+        ),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
+        return MaterialApp(
+          title: 'BloC Tasks App',
+          theme:
+              AppThemes.appThemeData[context.read<ThemeCubit>().state.appTheme],
+          home: const TabsScreen(),
+          onGenerateRoute: appRouter.onGenerateRoute,
+        );
+      }),
     );
   }
 }
