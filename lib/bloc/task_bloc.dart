@@ -172,7 +172,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
             completedTasks: (List.from(state.completedTasks!)
               ..removeAt(completedIndex)),
             favoriteTasks: favoriteIndex != -1
-                ? (List.from(state.favoriteTasks!)..removeAt(favoriteIndex))
+                ? (List.from(state.favoriteTasks!)
+                  ..removeAt(favoriteIndex)
+                  ..insert(favoriteIndex, event.task))
                 : state.favoriteTasks,
             removedTasks: state.removedTasks),
       );
@@ -186,7 +188,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
               ..removeAt(pendingIndex)),
             completedTasks: (List.from(state.completedTasks!)..add(event.task)),
             favoriteTasks: favoriteIndex != -1
-                ? (List.from(state.favoriteTasks!)..add(event.task))
+                ? (List.from(state.favoriteTasks!)
+                  ..removeAt(favoriteIndex)
+                  ..insert(favoriteIndex, event.task))
                 : state.favoriteTasks,
             removedTasks: state.removedTasks),
       );
