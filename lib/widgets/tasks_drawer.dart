@@ -1,3 +1,5 @@
+import 'package:bloc_finals_exam/app_themes.dart';
+import 'package:bloc_finals_exam/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +14,10 @@ class TasksDrawer extends StatelessWidget {
 
   _switchToDarkTheme(BuildContext context, bool isDarkTheme) {
     if (isDarkTheme) {
-    } else {}
+      context.read<ThemeCubit>().toggleTheme(AppTheme.darkMode);
+    } else {
+      context.read<ThemeCubit>().toggleTheme(AppTheme.lightMode);
+    }
   }
 
   @override
