@@ -91,19 +91,54 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
               ? (List.from(state.favoriteTasks!)
                 ..removeAt(favoriteIndex)
                 ..insert(favoriteIndex, event.task))
-              : state.completedTasks,
+              : state.favoriteTasks,
           removedTasks: state.removedTasks),
     );
   }
 
   void addToFavorite(AddToFavorite event, Emitter<TaskState> emit) {
-    // int index =
-    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
-    // emit(state.copyWith(
-    //   tasks: List.from(state.tasks!)
-    //     ..removeAt(index)
-    //     ..insert(index, event.task),
-    // ));
+    int pendingIndex = state.pendingTasks!
+        .indexWhere((element) => element.id == event.task.id);
+    int completedIndex = state.completedTasks!
+        .indexWhere((element) => element.id == event.task.id);
+
+    if (!event.task.isFavorite!) {
+      int? favoriteIndex = state.favoriteTasks!
+          .indexWhere((element) => element.id == event.task.id);
+      emit(
+        state.copyWith(
+            pendingTasks: pendingIndex == -1
+                ? state.pendingTasks
+                : (List.from(state.pendingTasks!)
+                  ..removeAt(pendingIndex)
+                  ..insert(pendingIndex, event.task)),
+            completedTasks: completedIndex != -1
+                ? (List.from(state.completedTasks!)
+                  ..removeAt(completedIndex)
+                  ..insert(completedIndex, event.task))
+                : state.completedTasks,
+            favoriteTasks: favoriteIndex != -1
+                ? (List.from(state.favoriteTasks!)..removeAt(favoriteIndex))
+                : state.favoriteTasks,
+            removedTasks: state.removedTasks),
+      );
+    } else {
+      emit(
+        state.copyWith(
+            pendingTasks: pendingIndex == -1
+                ? state.pendingTasks
+                : (List.from(state.pendingTasks!)
+                  ..removeAt(pendingIndex)
+                  ..insert(pendingIndex, event.task)),
+            completedTasks: completedIndex != -1
+                ? (List.from(state.completedTasks!)
+                  ..removeAt(completedIndex)
+                  ..insert(completedIndex, event.task))
+                : state.completedTasks,
+            favoriteTasks: (List.from(state.favoriteTasks!)..add(event.task)),
+            removedTasks: state.removedTasks),
+      );
+    }
   }
 
   void completeTask(CompleteTask event, Emitter<TaskState> emit) {
