@@ -32,12 +32,8 @@ class RecycleBinScreen extends StatelessWidget {
                     label: const Text('Delete all tasks'),
                   ),
                   onTap: () {
-                    final removedTasks = context
-                        .read<TaskBloc>()
-                        .state
-                        .tasks!
-                        .where((element) => (element.isDeleted == true))
-                        .toList();
+                    final removedTasks =
+                        context.read<TaskBloc>().state.removedTasks!;
                     for (Task task in removedTasks) {
                       final deleteTask = Task(
                           id: task.id,
@@ -67,9 +63,7 @@ class RecycleBinScreen extends StatelessWidget {
                 child: Chip(
                   label: BlocBuilder<TaskBloc, TaskState>(
                     builder: (context, state) {
-                      final removedTasks = state.tasks!
-                          .where((element) => (element.isDeleted == true))
-                          .toList();
+                      final removedTasks = state.removedTasks!;
                       return Text('${removedTasks.length} Tasks');
                     },
                   ),
@@ -78,9 +72,7 @@ class RecycleBinScreen extends StatelessWidget {
               const SizedBox(height: 10),
               BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
-                  final removedTasks = state.tasks!
-                      .where((element) => (element.isDeleted == true))
-                      .toList();
+                  final removedTasks = state.removedTasks!;
                   return TasksList(tasksList: removedTasks);
                 },
               ),

@@ -22,10 +22,7 @@ class FavoriteTasksScreen extends StatelessWidget {
             child: Chip(
               label: BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
-                  final favoriteTasks = state.tasks!
-                      .where((element) => (element.isFavorite == true &&
-                          element.isDeleted == false))
-                      .toList();
+                  final favoriteTasks = state.favoriteTasks!;
                   return Text('${favoriteTasks.length} Tasks');
                 },
               ),
@@ -34,10 +31,7 @@ class FavoriteTasksScreen extends StatelessWidget {
           const SizedBox(height: 10),
           BlocBuilder<TaskBloc, TaskState>(
             builder: (context, state) {
-              final tasks = state.tasks!
-                  .where((element) => (element.isFavorite == true &&
-                      element.isDeleted == false))
-                  .toList();
+              final tasks = state.favoriteTasks!;
               return TasksList(tasksList: tasks);
             },
           ),

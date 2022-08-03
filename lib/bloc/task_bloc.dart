@@ -53,7 +53,13 @@ class RestoreTask extends TaskEvent {
 }
 
 class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
-  TaskBloc() : super(const TaskState(tasks: [])) {
+  TaskBloc()
+      : super(const TaskState(
+          pendingTasks: [],
+          completedTasks: [],
+          removedTasks: [],
+          favoriteTasks: [],
+        )) {
     on<CreateEditTask>(addEditTask);
     on<AddToFavorite>(addToFavorite);
     on<CompleteTask>(completeTask);
@@ -62,63 +68,76 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
   }
 
   void addEditTask(CreateEditTask event, Emitter<TaskState> emit) {
-    int index =
-        state.tasks!.indexWhere((element) => element.id == event.task.id);
-    if (index == -1) {
-      emit(state.copyWith(
-        tasks: List.from(state.tasks!)..add(event.task),
-      ));
-    } else {
-      emit(state.copyWith(
-        tasks: List.from(state.tasks!)
-          ..removeAt(index)
-          ..insert(index, event.task),
-      ));
-    }
+    int pendingIndex = state.pendingTasks!
+        .indexWhere((element) => element.id == event.task.id);
+    int completedIndex = state.completedTasks!
+        .indexWhere((element) => element.id == event.task.id);
+    int? favoriteIndex = state.favoriteTasks!
+        .indexWhere((element) => element.id == event.task.id);
+
+    emit(
+      state.copyWith(
+          pendingTasks: pendingIndex == -1
+              ? (List.from(state.pendingTasks!)..add(event.task))
+              : (List.from(state.pendingTasks!)
+                ..removeAt(pendingIndex)
+                ..insert(pendingIndex, event.task)),
+          completedTasks: completedIndex != -1
+              ? (List.from(state.completedTasks!)
+                ..removeAt(completedIndex)
+                ..insert(completedIndex, event.task))
+              : state.completedTasks,
+          favoriteTasks: favoriteIndex != -1
+              ? (List.from(state.favoriteTasks!)
+                ..removeAt(favoriteIndex)
+                ..insert(favoriteIndex, event.task))
+              : state.completedTasks,
+          removedTasks: state.removedTasks),
+    );
   }
 
   void addToFavorite(AddToFavorite event, Emitter<TaskState> emit) {
-    int index =
-        state.tasks!.indexWhere((element) => element.id == event.task.id);
-    emit(state.copyWith(
-      tasks: List.from(state.tasks!)
-        ..removeAt(index)
-        ..insert(index, event.task),
-    ));
+    // int index =
+    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
+    // emit(state.copyWith(
+    //   tasks: List.from(state.tasks!)
+    //     ..removeAt(index)
+    //     ..insert(index, event.task),
+    // ));
   }
 
   void completeTask(CompleteTask event, Emitter<TaskState> emit) {
-    int index =
-        state.tasks!.indexWhere((element) => element.id == event.task.id);
-    emit(state.copyWith(
-      tasks: List.from(state.tasks!)
-        ..removeAt(index)
-        ..insert(index, event.task),
-    ));
+    // int index =
+    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
+    // emit(state.copyWith(
+    //   tasks: List.from(state.tasks!)
+    //     ..removeAt(index)
+    //     ..insert(index, event.task),
+    // ));
   }
 
   void deleteTask(DeleteTask event, Emitter<TaskState> emit) {
-    int index =
-        state.tasks!.indexWhere((element) => element.id == event.task.id);
-    if (event.task.isDeleted!) {
-      emit(state.copyWith(
-        tasks: List.from(state.tasks!)
-          ..removeAt(index)
-          ..insert(index, event.task),
-      ));
-    } else {
-      emit(state.copyWith(tasks: List.from(state.tasks!)..removeAt(index)));
-    }
+    // int index =
+    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
+    // if (event.task.isDeleted!) {
+    //   emit(state.copyWith(
+    //     tasks: List.from(state.tasks!)
+    //       ..removeAt(index)
+    //       ..insert(index, event.task),
+    //   ));
+    // } else {
+    //   emit(state.copyWith(tasks: List.from(state.tasks!)..removeAt(index)));
+    // }
   }
 
   void restoreTask(RestoreTask event, Emitter<TaskState> emit) {
-    int index =
-        state.tasks!.indexWhere((element) => element.id == event.task.id);
-    emit(state.copyWith(
-      tasks: List.from(state.tasks!)
-        ..removeAt(index)
-        ..insert(index, event.task),
-    ));
+    // int index =
+    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
+    // emit(state.copyWith(
+    //   tasks: List.from(state.tasks!)
+    //     ..removeAt(index)
+    //     ..insert(index, event.task),
+    // ));
   }
 
   @override

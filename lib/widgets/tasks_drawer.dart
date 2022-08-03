@@ -37,14 +37,8 @@ class TasksDrawer extends StatelessWidget {
               title: const Text('My Tasks'),
               trailing: BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
-                  final pendingTasks = state.tasks!
-                      .where((element) => (element.isDone == false &&
-                          element.isDeleted == false))
-                      .toList();
-                  final completedTasks = state.tasks!
-                      .where((element) => (element.isDone == true &&
-                          element.isDeleted == false))
-                      .toList();
+                  final pendingTasks = state.pendingTasks!;
+                  final completedTasks = state.pendingTasks!;
                   return Text(
                     '${pendingTasks.length} | ${completedTasks.length}',
                   );
@@ -61,9 +55,7 @@ class TasksDrawer extends StatelessWidget {
               title: const Text('Recycle Bin'),
               trailing: BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
-                  final removedTasks = state.tasks!
-                      .where((element) => (element.isDeleted == true))
-                      .toList();
+                  final removedTasks = state.removedTasks!;
                   return Text('${removedTasks.length}');
                 },
               ),

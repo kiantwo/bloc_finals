@@ -22,10 +22,7 @@ class CompletedTasksScreen extends StatelessWidget {
             child: Chip(
               label: BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
-                  final completeTasks = state.tasks!
-                      .where((element) => (element.isDone == true &&
-                          element.isDeleted == false))
-                      .toList();
+                  final completeTasks = state.completedTasks!;
                   return Text('${completeTasks.length} Tasks');
                 },
               ),
@@ -34,10 +31,7 @@ class CompletedTasksScreen extends StatelessWidget {
           const SizedBox(height: 10),
           BlocBuilder<TaskBloc, TaskState>(
             builder: (context, state) {
-              final completeTasks = state.tasks!
-                  .where((element) =>
-                      (element.isDone == true && element.isDeleted == false))
-                  .toList();
+              final completeTasks = state.completedTasks!;
               return TasksList(tasksList: completeTasks);
             },
           ),
