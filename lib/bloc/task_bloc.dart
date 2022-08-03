@@ -198,17 +198,40 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   void deleteTask(DeleteTask event, Emitter<TaskState> emit) {
-    // int index =
-    //     state.tasks!.indexWhere((element) => element.id == event.task.id);
-    // if (event.task.isDeleted!) {
-    //   emit(state.copyWith(
-    //     tasks: List.from(state.tasks!)
-    //       ..removeAt(index)
-    //       ..insert(index, event.task),
-    //   ));
-    // } else {
-    //   emit(state.copyWith(tasks: List.from(state.tasks!)..removeAt(index)));
-    // }
+    if (!event.task.isDeleted!) {
+      // Delete Forever
+      int removedIndex = state.removedTasks!
+          .indexWhere((element) => element.id == event.task.id);
+      emit(
+        state.copyWith(
+            pendingTasks: state.pendingTasks,
+            completedTasks: state.completedTasks,
+            favoriteTasks: state.favoriteTasks,
+            removedTasks: List.from(state.removedTasks!)
+              ..removeAt(removedIndex)),
+      );
+    } else {
+      // Delete to Recycle Bin
+      int pendingIndex = state.pendingTasks!
+          .indexWhere((element) => element.id == event.task.id);
+      int? favoriteIndex = state.favoriteTasks!
+          .indexWhere((element) => element.id == event.task.id);
+      int completedIndex = state.completedTasks!
+          .indexWhere((element) => element.id == event.task.id);
+      emit(
+        state.copyWith(
+            pendingTasks: pendingIndex != -1
+                ? (List.from(state.pendingTasks!)..removeAt(pendingIndex))
+                : state.pendingTasks,
+            completedTasks: completedIndex != -1
+                ? (List.from(state.completedTasks!)..removeAt(completedIndex))
+                : state.completedTasks,
+            favoriteTasks: favoriteIndex != -1
+                ? (List.from(state.favoriteTasks!)..removeAt(favoriteIndex))
+                : state.favoriteTasks,
+            removedTasks: List.from(state.removedTasks!)..add(event.task)),
+      );
+    }
   }
 
   void restoreTask(RestoreTask event, Emitter<TaskState> emit) {
