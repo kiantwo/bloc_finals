@@ -38,7 +38,7 @@ class TasksDrawer extends StatelessWidget {
               trailing: BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
                   final pendingTasks = state.pendingTasks!;
-                  final completedTasks = state.pendingTasks!;
+                  final completedTasks = state.completedTasks!;
                   return Text(
                     '${pendingTasks.length} | ${completedTasks.length}',
                   );
