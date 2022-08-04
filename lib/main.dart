@@ -1,4 +1,4 @@
-import 'package:bloc_finals_exam/cubit/task_cubit.dart';
+import 'package:bloc_finals_exam/bloc/task_bloc.dart';
 import 'package:bloc_finals_exam/cubit/theme_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<TaskCubit>(
-          create: (_) => TaskCubit(),
+        BlocProvider<TaskBloc>(
+          create: (_) => TaskBloc(),
         ),
         BlocProvider<ThemeCubit>(
           create: (_) => ThemeCubit(),

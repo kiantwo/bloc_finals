@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/task_cubit.dart';
-import '../cubit/task_state.dart';
+import '../bloc/task_bloc.dart';
+import '../bloc/task_state.dart';
 import '../models/task.dart';
 import '../widgets/tasks_drawer.dart';
 import '../widgets/tasks_list.dart';
@@ -32,12 +32,8 @@ class RecycleBinScreen extends StatelessWidget {
                     label: const Text('Delete all tasks'),
                   ),
                   onTap: () {
-                    final removedTasks = context
-                        .read<TaskCubit>()
-                        .state
-                        .tasks!
-                        .where((element) => (element.isDeleted == true))
-                        .toList();
+                    final removedTasks =
+                        context.read<TaskBloc>().state.removedTasks!;
                     for (Task task in removedTasks) {
                       final deleteTask = Task(
                           id: task.id,
@@ -47,7 +43,9 @@ class RecycleBinScreen extends StatelessWidget {
                           isFavorite: task.isFavorite,
                           isDone: task.isDone,
                           isDeleted: !task.isDeleted!);
-                      context.read<TaskCubit>().deleteTask(deleteTask);
+                      context
+                          .read<TaskBloc>()
+                          .add(DeleteTask(task: deleteTask));
                     }
                   },
                 ),
@@ -63,22 +61,18 @@ class RecycleBinScreen extends StatelessWidget {
             children: [
               Center(
                 child: Chip(
-                  label: BlocBuilder<TaskCubit, TaskState>(
+                  label: BlocBuilder<TaskBloc, TaskState>(
                     builder: (context, state) {
-                      final removedTasks = state.tasks!
-                          .where((element) => (element.isDeleted == true))
-                          .toList();
+                      final removedTasks = state.removedTasks!;
                       return Text('${removedTasks.length} Tasks');
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              BlocBuilder<TaskCubit, TaskState>(
+              BlocBuilder<TaskBloc, TaskState>(
                 builder: (context, state) {
-                  final removedTasks = state.tasks!
-                      .where((element) => (element.isDeleted == true))
-                      .toList();
+                  final removedTasks = state.removedTasks!;
                   return TasksList(tasksList: removedTasks);
                 },
               ),
